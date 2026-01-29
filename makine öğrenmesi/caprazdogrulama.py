@@ -22,9 +22,31 @@ y = df['Hastalik']
 # acc = accuracy_score(y_test, y_pred)
 # print(f"Modelin doğruluk değeri = {acc:.2f}")
 
-capraz_dogrulama = DecisionTreeClassifier()
+capraz_dogrulama = DecisionTreeClassifier(max_depth=4,min_samples_leaf=4,min_samples_split=9)
+
 siniflandirma = cross_val_score(capraz_dogrulama,X,y, cv=11)
-print(f"Çapraz doğrulama sonucu olarak = {siniflandirma}")
-print(f"Ortalama çapraz doğruluk değeri sonucu = {siniflandirma.mean():.2f}")
+# print(f"Çapraz doğrulama sonucu olarak = {siniflandirma}")
+# print(f"Ortalama çapraz doğruluk değeri sonucu = {siniflandirma.mean():.2f}")
+
+capraz_dogrulama.fit(X,y)
+# Kullanıcıdan veri alalım
+
+yas = int(input("Lütfen yaşınızı giriniz = "))
+kan_basinci = int(input("Lütfen Kan Basıncı değerini giriniz = "))
+kolesterol = int(input("Lütfen Kolesterolünüzü giriniz = "))
 
 
+#Kullanıcıdan alınan veriyi modelin anlayacağı dile çevirme
+
+yeni_veri = pd.DataFrame([[yas,kan_basinci,kolesterol]], columns= ['Yas','Kan_Basinci','Kolesterol'])
+
+tahmin = capraz_dogrulama.predict(yeni_veri)
+
+#Tahmin sonucunu kullanıcıya göster
+
+if (tahmin[0] == 1):
+    print("Hastalık var")
+else:
+    print("Hastalık yok")
+    
+    
